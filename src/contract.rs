@@ -1,8 +1,8 @@
 use cosmwasm_std::{
     entry_point, to_binary, BankMsg, Binary, Deps, DepsMut, Env, MessageInfo, Response, StdResult,
 };
-use nibiru_std::proto::cosmos::{self, base};
-use nibiru_std::proto::{nibiru, NibiruStargateMsg};
+// use nibiru_std::proto::cosmos::{self, base};
+// use nibiru_std::proto::{nibiru, NibiruStargateMsg};
 
 use crate::error::ContractError;
 use crate::msg::{ConfigResponse, ExecuteMsg, InstantiateMsg, QueryMsg};
