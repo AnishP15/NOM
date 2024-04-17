@@ -417,6 +417,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5916d2ae698f6de9bfb891ad7a8d65c09d232dc58cc4ac433c7da3b2fd84bc2b"
 
 [[package]]
+name = "new_contract"
+version = "0.11.0"
+dependencies = [
+ "cosmwasm-schema",
+ "cosmwasm-std",
+ "cw-storage-plus",
+ "nibiru-std",
+ "thiserror",
+]
+
+[[package]]
 name = "nibiru-std"
 version = "0.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -655,17 +666,6 @@ checksum = "77549399552de45a898a580c1b41d445bf730df867cc44e6c0233bbc4b8329de"
 dependencies = [
  "digest 0.10.7",
  "rand_core 0.6.4",
-]
-
-[[package]]
-name = "simple-option"
-version = "0.11.0"
-dependencies = [
- "cosmwasm-schema",
- "cosmwasm-std",
- "cw-storage-plus",
- "nibiru-std",
- "thiserror",
 ]
 
 [[package]]
