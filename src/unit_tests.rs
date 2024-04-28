@@ -37,8 +37,8 @@ fn test_create_contract() {
 
 
 /*
-Create a contract under user1 and have user2 bid on it. 
-Check the state to see if the contract's bid amount is updated under user1. 
+    Create a contract under user1 and have user2 bid on it. 
+    Check the state to see if the contract's bid amount is updated under user1. 
 */ 
 
 #[test]
@@ -124,4 +124,41 @@ fn test_execute_contract() {
    let state = State::from_storage(&mut deps.storage).unwrap();
    let contract = state.contracts.get(&contract_id).unwrap();
    assert_eq!(contract.owner, bidder_info.sender.to_string());
+}
+
+
+
+/*
+    User1 creates a contract and then expires it - deleting it from the state.
+*/
+
+#[test]
+fn test_expire_contract() {
+    let mut deps = mock_dependencies(&[]);
+    let env = mock_env("creator", &[]);
+    let info = mock_info("creator", &[]);
+
+    // Create a contract
+    let msg = ExecuteMsg::Create {
+        underlying: "ATOM".to_string(),
+        strike_price: 100_000000,
+        expiration: env.block.time.plus_seconds(100).nanos(),  
+        contract_type: "call".to_string(),
+        bid_price: 50_000000,
+        ask_price: 150_000000,
+    };
+
+    let _res = execute(deps.as_mut(), env.clone(), info.clone(), msg).unwrap();
+
+    // Expire the contract
+    let contract_id = info.sender.to_string();
+    let msg = ExecuteMsg::Expire {
+        contract_id: contract_id.clone(),
+    };
+
+    let _res = execute(deps.as_mut(), env.clone(), info.clone(), msg).unwrap();
+
+    // Query the state to ensure the contract is no longer in the contracts map
+    let state = State::from_storage(&mut deps.storage).unwrap();
+    assert!(!state.contracts.contains_key(&contract_id));
 }
