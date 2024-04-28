@@ -1,9 +1,4 @@
 pub enum ExecuteMsg {
-    Transfer {
-        contract_id: String,
-        new_owner: String,
-    },
-
     Expire {
         contract_id: String,
     },

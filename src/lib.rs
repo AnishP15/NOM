@@ -47,7 +47,7 @@ impl State {
     }
 }
 // Entry point for creating a new options contract
-pub fn instantiate(deps: DepsMut, _env: Env, info: MessageInfo) -> StdResult<Response> {
+pub fn instantiate(deps: DepsMut, _env: Env, _info: MessageInfo) -> StdResult<Response> {
     let mut state = State {
         contracts: HashMap::new(),
     };
@@ -90,29 +90,6 @@ pub fn execute(
             };
             let contract_id = contract.owner.clone();
             state.contracts.insert(contract_id, contract);
-
-            Ok(Response::default())
-        }
-        // Entry point for transferring ownership of an options contract
-        ExecuteMsg::Transfer {
-            contract_id,
-            new_owner,
-        } => {
-            // let mut state = State::from_storage(deps.storage)?;
-            let mut contract = state
-                .contracts
-                .get_mut(&contract_id)
-                .ok_or_else(|| StdError::not_found("Contract not found"))?;
-
-            if contract.owner != info.sender {
-                return Err(StdError::generic_err("Not authorized to transfer contract"));
-            }
-
-            let mut new_contract = contract.clone();
-            // contract.owner = new_owner;
-            new_contract.owner = new_owner;
-            state.contracts.insert(contract_id, new_contract);
-            deps.storage.set(b"state", &to_binary(&state)?);
 
             Ok(Response::default())
         }
